@@ -1,6 +1,42 @@
+#include <iostream>
+//#include <cmath>
+#include <vector>
+//#include <algorithm>
+//#include <iomanip>
 
-	//de acordo com o pseudo não precisa recalcular o num de caminhos novamente
-	//é assim mesmo?
+class Graph{
+	std::vector<std::vector<>> graf;
+
+	public Graph (std::vector<std::vector<>> g){
+		graf = g;
+	}
+
+	public int getCompConex(){
+		// how?
+	}
+
+	public int getVSize(){
+		return graf.size();
+	}	
+
+	public int getESize(){
+		return graf[0].size();
+	}
+
+	public int getEWeight(int j){
+		for(int i = 0; i < g.size(); i++){
+			if(g[i][j] >= 0){
+				return g[i][j];
+			}
+		}
+	}
+
+	public void removeEdg(){
+		// how?
+	}
+};
+
+
 int gNewman(Graph g, int k){
 	int conex = 1;
 	do{
@@ -8,24 +44,27 @@ int gNewman(Graph g, int k){
 	removeBridge(g);	//reseta os pesos tbm?
 	conex = g.getCompConex();
 	}while(conex < k)
-	return g; 	//ou a gente cria um grafo q é cópia do inicial
-				// e retorna ele modificado?
+	return g;
+	//ou retorna modif?
 }
 
 void countPaths(Graph g){
-	for(int i =0; i < g.vSize(); i++){
-		for(int j = i+1; j < g.vSize(); j++){
-			shortestPath(g, i, j);	//adiciona às arestas internamente ou aqui fora?
+	std::vector<int> path;
+	for(int i =0; i < g.getVSize(); i++){
+		for(int j = i+1; j < g.getVSize(); j++){
+			//passa por ref pra não ficar copiando?
+			path = shortestPath(g, i, j);
 			//is this O(n log n)?
 		}
 	}
 }
 
-//Ao criar o graph tem q settar todos pesos pra 0
+//Ao criar o graph tem q settar todos pesos pra -1 (pq pode ter peso 0)
 void removeBridge(Graph g){
 	int great = 0;
 	int idx = 0;
-	for(int i = 0; i < g.eSize(); i++){
+	int eWeight;
+	for(int i = 0; i < g.getESize(); i++){
 		eWeight = g.edg(i).weight();
 		if(eWeight > great){
 			great = eWeight;
