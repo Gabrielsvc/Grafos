@@ -4,10 +4,12 @@
 //#include <algorithm>
 //#include <iomanip>
 
-class Graph{
-	std::vector<std::vector<>> graf;
+using std::vector;
 
-	public Graph (std::vector<std::vector<>> g){
+class Graph{
+	vector<vector<>> graf;
+
+	public Graph (vector<vector<>> g){
 		graf = g;
 	}
 
@@ -41,31 +43,35 @@ int gNewman(Graph g, int k){
 	int conex = 1;
 	do{
 	countPaths(g);
-	removeBridge(g);	//reseta os pesos tbm?
+	removeBridge(g);	// reseta os pesos tbm?
 	conex = g.getCompConex();
 	}while(conex < k)
 	return g;
-	//ou retorna modif?
+	// ou retorna modif?
 }
 
 void countPaths(Graph g){
-	std::vector<int> path;
+	vector<int> path;
 	for(int i =0; i < g.getVSize(); i++){
 		for(int j = i+1; j < g.getVSize(); j++){
-			//passa por ref pra não ficar copiando?
+			// passa por ref pra não ficar copiando?
 			path = shortestPath(g, i, j);
-			//is this O(n log n)?
+			// is this O(n log n)?
 		}
 	}
 }
 
-//Ao criar o graph tem q settar todos pesos pra -1 (pq pode ter peso 0)
+vector<int> shortestPath(Graph g, int i, int j){
+	// Dijkstra
+}
+
+// Ao criar o graph tem q settar todos pesos pra -1 (pq pode ter peso 0)
 void removeBridge(Graph g){
 	int great = 0;
 	int idx = 0;
 	int eWeight;
 	for(int i = 0; i < g.getESize(); i++){
-		eWeight = g.edg(i).weight();
+		eWeight = g.getEWeight(i);
 		if(eWeight > great){
 			great = eWeight;
 			idx = i;
@@ -73,4 +79,4 @@ void removeBridge(Graph g){
 	}
 	g.remEdg(idx);
 }
-//Em algumas implementações ele remove arestas de pesos iguais ao mesmo tempo.
+// Em algumas implementações ele remove arestas de pesos iguais ao mesmo tempo.
