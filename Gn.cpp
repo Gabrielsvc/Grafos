@@ -9,6 +9,7 @@ using std::vector;
 class Graph{
 	vector<vector<>> graf;
 
+	//Aresta X Vertice
 	public Graph (vector<vector<>> g){
 		graf = g;
 	}
@@ -18,15 +19,15 @@ class Graph{
 	}
 
 	public int getVSize(){
-		return graf.size();
+		return graf[0].size();
 	}	
 
 	public int getESize(){
-		return graf[0].size();
+		return graf.size();
 	}
 
-	public int getEWeight(int j){
-		for(int i = 0; i < g.size(); i++){
+	public int getEWeight(int i){
+		for(int j = 0; j < g[0].size(); j++){
 			if(g[i][j] >= 0){
 				return g[i][j];
 			}
@@ -80,3 +81,16 @@ void removeBridge(Graph g){
 	g.remEdg(idx);
 }
 // Em algumas implementações ele remove arestas de pesos iguais ao mesmo tempo.
+
+int main(int argc, char const *argv[]) {
+	vector<vector<int>> g = {
+		{ 0,-1,-1, 0,-1},
+		{-1, 0,-1,-1, 0},
+		{-1,-1, 0, 0,-1},
+		{-1, 0, 0,-1,-1},
+		{-1,-1,-1, 0, 0},
+		{ 0,-1, 0,-1,-1}
+	};
+	Graph grafo1 = new Grafo(g);
+	// Etc
+}
