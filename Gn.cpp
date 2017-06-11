@@ -33,7 +33,10 @@ class Graph{
 	
 	
 	}
-	public int adj
+	public int adj(int vert){ 
+	// Como pegar vertice adjacente
+	}
+	
 
 	public int getVSize(){
 		return graf[0].size();
