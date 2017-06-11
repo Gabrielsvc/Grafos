@@ -16,7 +16,24 @@ class Graph{
 
 	public int getCompConex(){
 		// how?
+		/*Busca em Profundidade!*/
+		int *cc = new int[g[0].size()];
+		int vert;
+		for(vert = 0;vert < g[0].size(); ++vert){
+			cc[vert] = -1;
+		}
+		for(vert = 0 ; vert <g[0].size(); ++vert)
+			if(cc[vert] == -1)
+				atrID(g, cc, v, id++);		
 	}
+	
+	public void atrID(Graph g, int *cc, int v1, int d){
+	int adj;
+	cc[v1] = d;
+	
+	
+	}
+	public int adj
 
 	public int getVSize(){
 		return graf[0].size();
