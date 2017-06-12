@@ -7,19 +7,7 @@
 using std::vector;
 
 
-
-int getCompConex(vector<vector<int>> g, vector<int> comm){
-	/*Busca em Profundidade!*/
-	int vert, id = 0;
-	for(vert = 0; vert < g[0].size(); vert++){
-		comm.push_back(-1);
-	}
-	for(vert = 0; vert < g[0].size(); vert++)
-		if(comm[vert] == -1)
-			atrID(g, comm, vert, id++);		
-}
-
-void atrID(vector<vector<int>> g, vector<int> comm, int v, int id){
+void atrID(vector<vector<int> > g, vector<int> comm, int v, int id){
 	int adj;
 	comm[v] = id;
 	for(int i = 0; i < g.size(); i++){
@@ -35,21 +23,38 @@ void atrID(vector<vector<int>> g, vector<int> comm, int v, int id){
 	}
 }
 
+int getCompConex(vector<vector<int> > g, vector<int> comm){
+	/*Busca em Profundidade!*/
+	int vert, id = 0;
+	for(vert = 0; vert < g[0].size(); vert++){
+		comm.push_back(-1);
+	}
+	for(vert = 0; vert < g[0].size(); vert++)
+		if(comm[vert] == -1)
+			atrID(g, comm, vert, id++);		
+}
 
-int gNewman(vector<vector<int>> g, vector<int> betw, int k){
-	int conex = 1;
-	do{
-		calcBetw(g, betw);
-		removeBridge(g, betw);	// reseta a betweeness?
-		conex = g.getCompConex();
-	}while(conex < k)
-	return g;
-	// ou retorna modif?
+
+vector<int> shortestPath(vector<vector<int> > g, int vert1, int vert2){
+	// Dijkstra
+}
+
+void removeBridge(vector<vector<int> > g, vector<int> betw){
+	int great = 0;
+	int idx = 0;
+	for(int i = 0; i < betw.size(); i++){
+		if(betw[i] > great){
+			great = betw[i];
+			idx = i;
+		}
+	}
+	g.erase(g.begin() + idx);
+	betw.erase(betw.begin() + idx);
 }
 
 
 //compara cada vértice (coluna)
-void calcBetw(vector<vector<int>> g, vector<int> betw){
+void calcBetw(vector<vector<int> > g, vector<int> betw){
 	vector<int> path;
 
 	for(int i =0; i < g[0].size(); i++){
@@ -65,33 +70,28 @@ void calcBetw(vector<vector<int>> g, vector<int> betw){
 	}
 }
 
-vector<int> shortestPath(vector<vector<int>> g, int vert1, int vert2){
-	// Dijkstra
-}
 
-void removeBridge(vector<vector<int>> g, vector<int> betw){
-	int great = 0;
-	int idx = 0;
-	for(int i = 0; i < betw.size(); i++){
-		if(betw[i] > great){
-			great = betw[i];
-			idx = i;
-		}
-	}
-	g.erase(g.begin() + idx);
-	betw.erase(betw.begin() + idx);
+int gNewman(vector<vector<int> > g, vector<int> betw, int k, vector<int> comm){
+	int conex = 1;
+	do{
+		calcBetw(g, betw);
+		removeBridge(g, betw);	// reseta a betweeness?
+		conex = getCompConex(g,comm);
+	}while(conex < k);
+	return g;
+	// ou retorna modif?
 }
-
 int main(int argc, char const *argv[]) {
-
-
-	vector<vector<int>> g = {
+	vector<int> cc;
+	int blah[] ={
 		{ 1, 0, 0, 1, 0},
-		{ 0, 1, 0, 0, 1},
-		{ 0, 0, 1, 1, 0},
+		{ 0, 0, 1, 0, 1},
 		{ 0, 1, 1, 0, 0},
-		{ 0, 0, 0, 1, 1},
-		{ 1, 0, 1, 0, 0}
-	};
-	vector<int> betw = {0,0,0,0,0,0};
+		{ 0, 1, 0, 0, 1},
+		}; 
+	vector<vector<int> > g (blah,blah+sizeof(blah)/sizeof(int));
+		getCompConex(g,cc);
+		cout << "Bagulhos" << endl;
+		for(int i = 0;i < g[0].size();i++)
+			cout << cc[i] << endl;
 }
