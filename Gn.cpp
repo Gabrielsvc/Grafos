@@ -35,24 +35,6 @@ void atrID(vector<vector<int>> g, vector<int> comm, int v, int id){
 	}
 }
 
-vector<vector<int>> monta_adj(vector<vector<int>> g){
-	vector<vector<int>(g[0].size())>(g[0].size()) adjacencia; 
-	for(int i = 0; i < g[0].size(), i++)
-		for(int j = i+1; j < g.size(), j++){					
-			if(g[i][j] > 0)
-				for(int k = 0; k < g[0].size; k++)
-					if(g[i][k] > 0 && i != k){
-						adjacencia[i][k] = 1;
-						adjacencia[k][i] = 1;	
-					}
-		}
-	return adjacencia;
-}
-
-int adj(int vert){
-	// Como pegar vertice adjacente
-}
-
 
 int gNewman(vector<vector<int>> g, vector<int> betw, int k){
 	int conex = 1;
