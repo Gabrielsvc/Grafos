@@ -8,7 +8,7 @@ using std::vector;
 
 
 void atrID(vector<vector<int> > &g, vector<int> &comm, int v, int id){
-	int adj;
+
 	comm[v] = id;
 	for(int i = 0; i < g.size(); i++){
 		if(g[i][v] == 1){
@@ -37,7 +37,70 @@ int getCompConex(vector<vector<int> > &g, vector<int> &comm){
 
 vector<int> shortestPath(vector<vector<int> > g, int vert1, int vert2){
 	// Dijkstra
+	vector<int> dist, prev, Q;
+
+	for(int i = 0; i < g[0].size(); i++){
+		dist.push_back(-1);
+		Q.push_back(i);
+	}
+	dist[vert1] = 0;
+
+	int u, d = 0;
+	while (Q.size() != 0){
+
+		for(int i = 0; i< Q.size(); i++){
+			if(dist[i] <= d and dist[i] != -1){
+				u = Q[i];
+			}
+		}
+
+		for(int i = 0; i < Q.size(); i++){
+			if(Q[i] == u){
+				Q.erase(Q.begin() + i);
+			}
+		}
+
+		//Procura adjacentes
+		int alt;
+		//Arestas de u
+		for(int i = 0; i < g.size(); i++){
+			if(g[i][u] == 1){
+				for(int j = 0; j < g[0].size(); j++){
+					//Outra ponta da aresta
+					if(g[i][j] == 1 and j != u){
+						//Ainda está em Q
+						for(int k = 0; k < Q.size(); k++){
+							if(j == Q[k]){
+								alt = dist[u] + 1;
+								if(alt < dist[j]){
+									dist[j] = alt;
+									prev.push_back(i);
+								}
+								break;
+							}
+						}
+
+					}
+					break;
+				}
+			}
+		}
+	}
+	return prev;
 }
+
+int getCompConex(vector<vector<int> > &g, vector<int> &comm){
+	/*Busca em Profundidade!*/
+	int vert, id = 0;
+	for(vert = 0; vert < g[0].size(); vert++){
+		comm.push_back(-1);
+	}
+	for(vert = 0; vert < g[0].size(); vert++)
+		if(comm[vert] == -1)
+			atrID(g, comm, vert, id++);		
+}
+
+
 
 void removeBridge(vector<vector<int> > g, vector<int> betw){
 	int great = 0;
@@ -89,6 +152,7 @@ int main(int argc, char const *argv[]) {
 		{ 0, 1, 1, 0, 0},
 		{ 0, 1, 0, 0, 1},
 		}; 
+
 	vector<vector<int> > g ;
 	for(int i = 0; i < 4; i++){
 		vector<int> temp;
