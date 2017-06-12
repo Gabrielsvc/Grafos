@@ -3,11 +3,11 @@
 #include <vector>
 //#include <algorithm>
 //#include <iomanip>
-
+using namespace std;
 using std::vector;
 
 
-void atrID(vector<vector<int> > g, vector<int> comm, int v, int id){
+void atrID(vector<vector<int> > &g, vector<int> &comm, int v, int id){
 	int adj;
 	comm[v] = id;
 	for(int i = 0; i < g.size(); i++){
@@ -23,7 +23,7 @@ void atrID(vector<vector<int> > g, vector<int> comm, int v, int id){
 	}
 }
 
-int getCompConex(vector<vector<int> > g, vector<int> comm){
+int getCompConex(vector<vector<int> > &g, vector<int> &comm){
 	/*Busca em Profundidade!*/
 	int vert, id = 0;
 	for(vert = 0; vert < g[0].size(); vert++){
@@ -71,7 +71,7 @@ void calcBetw(vector<vector<int> > g, vector<int> betw){
 }
 
 
-int gNewman(vector<vector<int> > g, vector<int> betw, int k, vector<int> comm){
+vector<vector<int> >  gNewman(vector<vector<int> > g, vector<int> betw, int k, vector<int> comm){
 	int conex = 1;
 	do{
 		calcBetw(g, betw);
@@ -83,15 +83,22 @@ int gNewman(vector<vector<int> > g, vector<int> betw, int k, vector<int> comm){
 }
 int main(int argc, char const *argv[]) {
 	vector<int> cc;
-	int blah[] ={
+	int blah[][5] = {
 		{ 1, 0, 0, 1, 0},
 		{ 0, 0, 1, 0, 1},
 		{ 0, 1, 1, 0, 0},
 		{ 0, 1, 0, 0, 1},
 		}; 
-	vector<vector<int> > g (blah,blah+sizeof(blah)/sizeof(int));
-		getCompConex(g,cc);
-		cout << "Bagulhos" << endl;
-		for(int i = 0;i < g[0].size();i++)
-			cout << cc[i] << endl;
+	vector<vector<int> > g ;
+	for(int i = 0; i < 4; i++){
+		vector<int> temp;
+		for(int j = 0; j < 5; j++){
+			temp.push_back(blah[i][j]);
+		}
+		g.push_back(temp);
+	}
+	getCompConex(g,cc);
+	for(int i = 0;i < g[0].size();i++){
+		cout << cc[i] << endl;
+	}
 }
