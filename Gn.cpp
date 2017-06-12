@@ -27,75 +27,59 @@ cc[v1] = d;
 
 }
 
-int adj(int vert){ 
-// Como pegar vertice adjacente
+int adj(int vert){
+	// Como pegar vertice adjacente
 }
 
 
-int getVSize(vector<vector<int>> g){
-	return g[0].size();
-}	
-
-int getESize(vector<vector<int>> g){
-	return g.size();
-}
-
-int getEBetween(vector<vector<int>> g, int i){
-	for(int j = 0; j < g[0].size(); j++){
-		if(g[i][j] >= 0){
-			return g[i][j];
-		}
-	}
-}
-
-void removeEdg(){
-	// how?
-}
-
-
-
-int gNewman(vector<vector<int>> g, int k){
+int gNewman(vector<vector<int>> g, vector<int> betw, int k){
 	int conex = 1;
 	do{
-		countPaths(g);
-		removeBridge(g);	// reseta a betweeness?
+		calcBetw(g, betw);
+		removeBridge(g, betw);	// reseta a betweeness?
 		conex = g.getCompConex();
 	}while(conex < k)
 	return g;
 	// ou retorna modif?
 }
 
-//review
-void countPaths(vector<vector<int>> g){
+
+//compara cada vértice (coluna)
+void calcBetw(vector<vector<int>> g, vector<int> betw){
 	vector<int> path;
+
 	for(int i =0; i < g[0].size(); i++){
+
 		for(int j = i+1; j < g[0].size(); j++){
-			// passa por ref pra não ficar copiando?
 			path = shortestPath(g, i, j);
 			// is this O(n log n)?
 		}
+
+		for(int k = 0; k < path.size(); k++){
+			betw[path[k]]++;
+		}
 	}
 }
 
-vector<int> shortestPath(vector<vector<int>> g, int i, int j){
+vector<int> shortestPath(vector<vector<int>> g, int vert1, int vert2){
 	// Dijkstra
 }
 
-void removeBridge(vector<vector<int>> g){
+void removeBridge(vector<vector<int>> g, vector<int> betw){
 	int great = 0;
 	int idx = 0;
-	int eBetween;
-	for(int i = 0; i < g.size(); i++){
-		eWeight = g.getEWeight(i);
-		if(eWeight > great){
-			great = eWeight;
+	for(int i = 0; i < betw.size(); i++){
+		if(betw[i] > great){
+			great = betw[i];
 			idx = i;
 		}
 	}
-	g.remEdg(idx);
+	g.erase(g.begin() + idx);
+	betw.pop(betw.begin() + idx);
 }
 
 int main(int argc, char const *argv[]) {
+
 
 	vector<vector<int>> g = {
 		{ 1, 0, 0, 1, 0},
@@ -105,5 +89,5 @@ int main(int argc, char const *argv[]) {
 		{ 0, 0, 0, 1, 1},
 		{ 1, 0, 1, 0, 0}
 	};
-	vector<vector<int>> betw = {0,0,0,0,0,0};
+	vector<int> betw = {0,0,0,0,0,0};
 }
