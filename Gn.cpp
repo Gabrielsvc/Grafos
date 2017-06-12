@@ -8,6 +8,7 @@ using std::vector;
 
 
 void atrID(vector<vector<int> > &g, vector<int> &comm, int v, int id){
+
 	comm[v] = id;
 	for(int i = 0; i < g.size(); i++){
 		if(g[i][v] == 1){
@@ -78,6 +79,7 @@ vector<int> shortestPath(vector<vector<int> > g, int vert1, int vert2){
 								break;
 							}
 						}
+
 					}
 					break;
 				}
@@ -86,6 +88,18 @@ vector<int> shortestPath(vector<vector<int> > g, int vert1, int vert2){
 	}
 	return prev;
 }
+
+int getCompConex(vector<vector<int> > &g, vector<int> &comm){
+	/*Busca em Profundidade!*/
+	int vert, id = 0;
+	for(vert = 0; vert < g[0].size(); vert++){
+		comm.push_back(-1);
+	}
+	for(vert = 0; vert < g[0].size(); vert++)
+		if(comm[vert] == -1)
+			atrID(g, comm, vert, id++);		
+}
+
 
 
 void removeBridge(vector<vector<int> > g, vector<int> betw){
@@ -130,7 +144,6 @@ vector<vector<int> >  gNewman(vector<vector<int> > g, vector<int> betw, int k, v
 	return g;
 	// ou retorna modif?
 }
-
 int main(int argc, char const *argv[]) {
 	vector<int> cc;
 	int blah[][5] = {
