@@ -8,23 +8,45 @@ using std::vector;
 
 
 
-int getCompConex(){
+int getCompConex(vector<vector<int>> g, vector<int> comm){
 	/*Busca em Profundidade!*/
-	int *cc = new int[g[0].size()];
-	int vert;
-	for(vert = 0;vert < g[0].size(); ++vert){
-		cc[vert] = -1;
+	int vert, id = 0;
+	for(vert = 0; vert < g[0].size(); vert++){
+		comm.push_back(-1);
 	}
-	for(vert = 0 ; vert <g[0].size(); ++vert)
-		if(cc[vert] == -1)
-			atrID(g, cc, v, id++);		
+	for(vert = 0; vert < g[0].size(); vert++)
+		if(comm[vert] == -1)
+			atrID(g, comm, vert, id++);		
 }
 
-void atrID(vector<vector<int>> g, int *cc, int v1, int d){
-int adj;
-cc[v1] = d;
+void atrID(vector<vector<int>> g, vector<int> comm, int v, int id){
+	int adj;
+	comm[v] = id;
+	for(int i = 0; i < g.size(); i++){
+		if(g[i][v] == 1){
+			for(int j = 0; j < g[0].size(); j++){
+				if(g[i][j] == 1 and j != v){
+					if(comm[j] == -1){
+						atrID(g, comm, j, id);
+					}
+				}
+			}
+		}
+	}
+}
 
-
+vector<vector<int>> monta_adj(vector<vector<int>> g){
+	vector<vector<int>(g[0].size())>(g[0].size()) adjacencia; 
+	for(int i = 0; i < g[0].size(), i++)
+		for(int j = i+1; j < g.size(), j++){					
+			if(g[i][j] > 0)
+				for(int k = 0; k < g[0].size; k++)
+					if(g[i][k] > 0 && i != k){
+						adjacencia[i][k] = 1;
+						adjacencia[k][i] = 1;	
+					}
+		}
+	return adjacencia;
 }
 
 int adj(int vert){
@@ -75,7 +97,7 @@ void removeBridge(vector<vector<int>> g, vector<int> betw){
 		}
 	}
 	g.erase(g.begin() + idx);
-	betw.pop(betw.begin() + idx);
+	betw.erase(betw.begin() + idx);
 }
 
 int main(int argc, char const *argv[]) {
