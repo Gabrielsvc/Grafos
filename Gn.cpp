@@ -1,8 +1,9 @@
 #include <iostream>
 //#include <cmath>
 #include <vector>
-//#include <algorithm>
+#include <algorithm>
 //#include <iomanip>
+#include <fstream>
 using namespace std;
 using std::vector;
 
@@ -133,18 +134,19 @@ void calcBetw(vector<vector<int> > g, vector<int> betw){
 	}
 }
 void rec_friends(vector <int> cc, vector<vector<int> > g){
-	for(int i = 0; i < cc.size(); i ++)
+	for(int i = 0; i < cc.size(); i ++){
 		for(int j = i+1; j < cc.size(); j++)
-			if(cc[i] == cc[j])
+			if(cc[i] == cc[j]){
 				for(int k = 0 ; k < g.size();k++){
-					if(g[k][i]==g[k][j]){
+					if(g[k][i]== 1 and g[k][j]  == 1)
 						break;
-					}
-					else{
+					if(k == (g.size() - 1))
 						cout <<"Pessoa " << i << " e pessoa " << j << " poderiam se tornar boas amigas!" << endl;
-					}
 				}
+			}
+	}
 }
+
 
 vector<vector<int> >  gNewman(vector<vector<int> > g, vector<int> betw, int k, vector<int> comm){
 	int conex = 1;
@@ -156,8 +158,19 @@ vector<vector<int> >  gNewman(vector<vector<int> > g, vector<int> betw, int k, v
 	return g;
 	// ou retorna modif?
 }
+
+
 int main(int argc, char const *argv[]) {
+	//Lendo o grafo do arquivo teste1.txt
+	int v,e, numcomcon;
+	ifstream myfile("teste1.txt",ios::in);
+	myfile >> e;
+	myfile >> v;
+	myfile >> numcomcon;
+	cout << "Nosso grafo tem " << endl << v << " vertices" << endl << e <<" arestas" << endl << "e queremos encontrar " << endl << numcomcon << " comunidades" << endl; 
 	vector<int> cc;
+
+  /*
 	int blah[][5] = {
 		{ 1, 0, 0, 1, 0},
 		{ 0, 0, 1, 0, 1},
@@ -178,4 +191,23 @@ int main(int argc, char const *argv[]) {
 	for(int i = 0;i < path.size();i++){
 		cout << path[i] << endl;
 	}
+  */
+  
+	vector< vector<int> > g(e,vector<int>(v));
+	for(int i = 0; i < e; i++)
+		for(int j = 0;j < v; j++)
+			myfile >> g[i][j];
+	
+	getCompConex(g,cc);
+	rec_friends(cc,g);
+	
+	
+	
+	/*
+	vector <int> dist = shortestPath(g,1,2);
+	for(int i = 0;i < dist.size();i++){
+		cout << dist[i] << endl;
+	}*/
+	myfile.close();
+	return 0;
 }
