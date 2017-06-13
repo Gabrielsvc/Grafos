@@ -1,8 +1,9 @@
 #include <iostream>
 //#include <cmath>
 #include <vector>
-//#include <algorithm>
+#include <algorithm>
 //#include <iomanip>
+#include <fstream>
 using namespace std;
 using std::vector;
 
@@ -48,7 +49,7 @@ vector<int> shortestPath(vector<vector<int> > g, int vert1, int vert2){
 	while (Q.size() != 0){
 		d = -1;
 		for(int i = 0; i< Q.size(); i++){
-			if((dist[i] <= d and dist[i] != -1) or d ==-1){
+			if((dist[i] <= d or d ==-1) and dist[i] != -1){
 				d = dist[i];
 				u = Q[i];
 			}
@@ -125,7 +126,7 @@ void rec_friends(vector <int> cc, vector<vector<int> > g){
 	for(int i = 0; i < cc.size(); i ++)
 		for(int j = i+1; j < cc.size(); j++)
 			if(cc[i] == cc[j])
-				for(int k = 0 ; k < g.size;()k++){
+				for(int k = 0 ; k < g.size();k++){
 					if(g[k][i]==g[k][j]){
 						break;
 					}
@@ -146,24 +147,24 @@ vector<vector<int> >  gNewman(vector<vector<int> > g, vector<int> betw, int k, v
 	// ou retorna modif?
 }
 int main(int argc, char const *argv[]) {
+	//Lendo o grafo do arquivo teste1.txt
+	int v,e, numcomcon;
+	ifstream myfile("teste1.txt",ios::in);
+	myfile >> e;
+	myfile >> v;
+	myfile >> numcomcon;
+	cout << "Nosso grafo tem " << endl << v << " vertices" << endl << e <<" arestas" << endl << "e queremos encontrar " << endl << numcomcon << " comunidades" << endl; 
 	vector<int> cc;
-	int blah[][5] = {
-		{ 1, 0, 0, 1, 0},
-		{ 0, 0, 1, 0, 1},
-		{ 0, 1, 1, 0, 0},
-		{ 1, 0, 0, 0, 1},
-		}; 
+	vector< vector<int> > g(e,vector<int>(v));
+	for(int i = 0; i < e; i++)
+		for(int j = 0;j < v; j++)
+			myfile >> g[i][j];
+	
 
-	vector<vector<int> > g ;
-	for(int i = 0; i < 4; i++){
-		vector<int> temp;
-		for(int j = 0; j < 5; j++){
-			temp.push_back(blah[i][j]);
-		}
-		g.push_back(temp);
-	}
 	vector <int> dist = shortestPath(g,1,2);
 	for(int i = 0;i < dist.size();i++){
 		cout << dist[i] << endl;
 	}
+	myfile.close();
+	return 0;
 }
