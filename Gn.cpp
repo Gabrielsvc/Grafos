@@ -44,15 +44,18 @@ vector<int> shortestPath(vector<vector<int> > g, int vert1, int vert2){
 	}
 	dist[vert1] = 0;
 
-	int u, d = 0;
+	int u, d;
 	while (Q.size() != 0){
-		d = -1;
-		for(int i = 0; i< Q.size(); i++){
-			if((dist[i] <= d and dist[i] != -1) or d ==-1){
+		d = 1000000000;
+		for(int i = 0; i < Q.size(); i++){
+			if(dist[i] <= d and dist[i] != -1){
 				d = dist[i];
 				u = Q[i];
+				cout << "d:" << d << endl;
+				cout << "u:" << u << endl;
 			}
 		}
+		if (u == vert2) break;
 
 		for(int i = 0; i < Q.size(); i++){
 			if(Q[i] == u){
@@ -62,28 +65,36 @@ vector<int> shortestPath(vector<vector<int> > g, int vert1, int vert2){
 
 		//Procura adjacentes
 		int alt;
-		cout << Q.size() << endl;
+		bool next = false;
+		
 	
 		//Arestas de u
 		for(int i = 0; i < g.size(); i++){
+			//cout << "p1" << endl;
 			if(g[i][u] == 1){
+
 				for(int j = 0; j < g[0].size(); j++){
+					//cout << "p2" << endl;
 					//Outra ponta da aresta
 					if(g[i][j] == 1 and j != u){
+
 						//Ainda está em Q
 						for(int k = 0; k < Q.size(); k++){
+							//cout << "p3" << endl;
 							if(j == Q[k]){
+
 								alt = dist[u] + 1;
-								if(alt < dist[j]){
+								if(alt < dist[j] or dist[j] == -1){
 									dist[j] = alt;
 									prev.push_back(i);
+									//cout << dist[j] << endl;
+									next = true;
 								}
 								break;
 							}
 						}
-
 					}
-					break;
+					if (next) break;
 				}
 			}
 		}
@@ -125,7 +136,7 @@ void rec_friends(vector <int> cc, vector<vector<int> > g){
 	for(int i = 0; i < cc.size(); i ++)
 		for(int j = i+1; j < cc.size(); j++)
 			if(cc[i] == cc[j])
-				for(int k = 0 ; k < g.size;()k++){
+				for(int k = 0 ; k < g.size();k++){
 					if(g[k][i]==g[k][j]){
 						break;
 					}
@@ -162,8 +173,9 @@ int main(int argc, char const *argv[]) {
 		}
 		g.push_back(temp);
 	}
-	vector <int> dist = shortestPath(g,1,2);
-	for(int i = 0;i < dist.size();i++){
-		cout << dist[i] << endl;
+	vector <int> path = shortestPath(g,0,1);
+	
+	for(int i = 0;i < path.size();i++){
+		cout << path[i] << endl;
 	}
 }
