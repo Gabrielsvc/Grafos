@@ -34,7 +34,6 @@ int getCompConex(vector<vector<int> > &g, vector<int> &comm){
 			atrID(g, comm, vert, id++);		
 }
 
-
 vector<int> shortestPath(vector<vector<int> > g, int vert1, int vert2){
 	// Dijkstra
 	vector<int> dist, prev, Q;
@@ -47,9 +46,10 @@ vector<int> shortestPath(vector<vector<int> > g, int vert1, int vert2){
 
 	int u, d = 0;
 	while (Q.size() != 0){
-
+		d = -1;
 		for(int i = 0; i< Q.size(); i++){
-			if(dist[i] <= d and dist[i] != -1){
+			if((dist[i] <= d and dist[i] != -1) or d ==-1){
+				d = dist[i];
 				u = Q[i];
 			}
 		}
@@ -62,6 +62,8 @@ vector<int> shortestPath(vector<vector<int> > g, int vert1, int vert2){
 
 		//Procura adjacentes
 		int alt;
+		cout << Q.size() << endl;
+	
 		//Arestas de u
 		for(int i = 0; i < g.size(); i++){
 			if(g[i][u] == 1){
@@ -88,19 +90,6 @@ vector<int> shortestPath(vector<vector<int> > g, int vert1, int vert2){
 	}
 	return prev;
 }
-
-int getCompConex(vector<vector<int> > &g, vector<int> &comm){
-	/*Busca em Profundidade!*/
-	int vert, id = 0;
-	for(vert = 0; vert < g[0].size(); vert++){
-		comm.push_back(-1);
-	}
-	for(vert = 0; vert < g[0].size(); vert++)
-		if(comm[vert] == -1)
-			atrID(g, comm, vert, id++);		
-}
-
-
 
 void removeBridge(vector<vector<int> > g, vector<int> betw){
 	int great = 0;
@@ -132,7 +121,19 @@ void calcBetw(vector<vector<int> > g, vector<int> betw){
 		}
 	}
 }
-
+void rec_friends(vector <int> cc, vector<vector<int> > g){
+	for(int i = 0; i < cc.size(); i ++)
+		for(int j = i+1; j < cc.size(); j++)
+			if(cc[i] == cc[j])
+				for(int k = 0 ; k < g.size;()k++){
+					if(g[k][i]==g[k][j]){
+						break;
+					}
+					else{
+						cout <<"Pessoa " << i << " e pessoa " << j << " poderiam se tornar boas amigas!" << endl;
+					}
+				}
+}
 
 vector<vector<int> >  gNewman(vector<vector<int> > g, vector<int> betw, int k, vector<int> comm){
 	int conex = 1;
@@ -150,7 +151,7 @@ int main(int argc, char const *argv[]) {
 		{ 1, 0, 0, 1, 0},
 		{ 0, 0, 1, 0, 1},
 		{ 0, 1, 1, 0, 0},
-		{ 0, 1, 0, 0, 1},
+		{ 1, 0, 0, 0, 1},
 		}; 
 
 	vector<vector<int> > g ;
@@ -161,8 +162,8 @@ int main(int argc, char const *argv[]) {
 		}
 		g.push_back(temp);
 	}
-	getCompConex(g,cc);
-	for(int i = 0;i < g[0].size();i++){
-		cout << cc[i] << endl;
+	vector <int> dist = shortestPath(g,1,2);
+	for(int i = 0;i < dist.size();i++){
+		cout << dist[i] << endl;
 	}
 }
